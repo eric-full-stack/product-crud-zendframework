@@ -1,0 +1,9 @@
+<?php foreach($products as $product): ?>
+	<div>
+		<h3><?= $product->name; ?></h3>
+		<p>Description</p>
+		<p><?= $product->description; ?></p>
+		<p>Price</p>
+		<p><?= $product->price; ?></p>
+	</div>
+<?php endforeach; ?>
