@@ -1,5 +1,4 @@
 <?php
-// module/Product/view/product/product/index.phtml:
 $this->inlineScript()->appendFile('/js/sendemail.js', 'text/javascript');
 $title = 'My products';
 $this->headTitle($title);
@@ -22,7 +21,7 @@ $this->headTitle($title);
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($products as $product) : ?>
+        <?php foreach ($this->paginator as $product) : ?>
             <tr>
                 <td><input type="checkbox" name="send-email" data-id = "<?= $product->id ?>"></td>
                 <td><?= $this->escapeHtml($product->name) ?></td>
@@ -44,3 +43,13 @@ $this->headTitle($title);
         <tr><td colspan="7"><button type="button" id="sendemail" class="btn btn-info">Send emails</button></td></tr>
     </tbody>
 </table>
+<?= $this->paginationControl(
+    // The paginator object:
+    $this->paginator,
+    // The scrolling style:
+    'sliding',
+    // The partial to use to render the control:
+    'partial/paginator',
+    // The route to link to when a user clicks a control link:
+    ['route' => 'product']
+) ?>

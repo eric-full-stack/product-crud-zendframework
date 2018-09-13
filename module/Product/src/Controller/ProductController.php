@@ -17,6 +17,13 @@ class ProductController extends AbstractActionController
         $this->table = $table;
     }
 
+    /**
+     * function sendEmailAction
+     *
+     * @params POST[data]
+     * 
+     * @response JsonEncode
+     */
     public function sendEmailAction(){
         if (!$this->getRequest()->isPost()){
             return new ViewModel([
@@ -32,9 +39,12 @@ class ProductController extends AbstractActionController
         foreach($data['data'] as $p){
             $products[] = $this->table->getProduct($p['id']);
         }
-
-        $mail = new MailSender();
-        $res = $mail->sendMail('sender@sender.com', 'recepient@mail.com', 'subject', $products);
+        try{
+            $mail = new MailSender();
+            $res = $mail->sendMail('sender@sender.com', 'recepient@mail.com', 'subject', $products);
+        }catch(\Exception $e){
+            return $response->setContent(\Zend\Json\Json::encode('Error: Mail not configured, see Application/src/Service/MailSender.php'));
+        }
 
 
         return $response->setContent(\Zend\Json\Json::encode($res));
@@ -43,9 +53,19 @@ class ProductController extends AbstractActionController
 
 
     public function indexAction(){
-        return new ViewModel([
-            'products' => $this->table->fetchAll(),
-        ]);
+        // Grab the paginator from the ProductTable:
+        $paginator = $this->table->fetchAll(true);
+
+        // Set the current page to what has been passed in query string,
+        // or to 1 if none is set, or the page is invalid:
+        $page = (int) $this->params()->fromQuery('page', 1);
+        $page = ($page < 1) ? 1 : $page;
+        $paginator->setCurrentPageNumber($page);
+
+        // Set the number of items per page to 10:
+        $paginator->setItemCountPerPage(2);
+
+        return new ViewModel(['paginator' => $paginator]);
     }
 
     public function addAction(){

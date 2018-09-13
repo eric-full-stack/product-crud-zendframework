@@ -13,13 +13,16 @@ use Zend\Mail\Transport\SmtpOptions;
 use Zend\View\Resolver;
 
 /**
- * This service class is used to deliver an E-mail message to recipient.
+ * This service class is used to deliver an E-mail message to recipient with html template.
  */
 class MailSender 
 {
     /**
-     * Sends the mail message.
-     {@return boolean}
+     * function sendMail
+     *
+     * @params $sender{string}, $recipient{string}, $products{@Product []} 
+     * 
+     * @response boolean
      */
     public function sendMail($sender, $recipient, $subject, $products) 
     {
@@ -31,6 +34,7 @@ class MailSender
             $resolver = new Resolver\AggregateResolver();
             $renderer->setResolver($resolver);
 
+            //set path layout
             $map = new Resolver\TemplateMapResolver([
                 'layout'      => __DIR__ . '/../../view/layout/email_template.phtml',
             ]);
@@ -40,14 +44,15 @@ class MailSender
             ->attach(new Resolver\RelativeFallbackResolver($map));
 
             $model    = new ViewModel();
-            
-            $model = new ViewModel(['products' => $products]);
 
+            //set variable products to layout
+            $model = new ViewModel(['products' => $products]);
+            //set template name
             $model->setTemplate('layout');
-    
+            //get layout html
             $bodyHtml = $renderer->render($model);
 
-
+            //set mime / encode
             $html = new MimePart($bodyHtml);
             $html->type = Mime::TYPE_HTML;
             $html->charset = 'utf-8';
@@ -58,10 +63,10 @@ class MailSender
             
             $message = new Message();
             $message->setBody($body);
-
+            //set headers
             $contentTypeHeader = $message->getHeaders()->get('Content-Type');
             $contentTypeHeader->setType('multipart/alternative');
-
+            //set email config
             $message->setFrom($sender);
             $message->addTo($recipient);
             $message->setSubject($subject);

@@ -48,7 +48,7 @@ echo $this->form()->openTag($form);
     <?= $this->formElement($price) ?>
     <?= $this->formElementErrors()->render($price, ['class' => 'help-block']) ?>
 </div>
-<a href="/" class="btn btn-default">Back</a>
+<a href="/product" class="btn btn-default">Back</a>
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($form->get('id'));

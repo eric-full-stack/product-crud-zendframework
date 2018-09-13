@@ -18,7 +18,6 @@ $price = $form->get('price');
 $price->setAttribute('class', 'form-control');
 $price->setAttribute('placeholder', 'Price');
 
-// This provides CSS classes for the submit button:
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
@@ -45,7 +44,7 @@ echo $this->form()->openTag($form);
     <?= $this->formElement($price) ?>
     <?= $this->formElementErrors()->render($price, ['class' => 'help-block']) ?>
 </div>
-<a href="/" class="btn btn-default">Back</a>
+<a href="/product" class="btn btn-default">Back</a>
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($form->get('id'));
