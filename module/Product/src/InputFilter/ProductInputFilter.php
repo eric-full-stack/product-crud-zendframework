@@ -3,8 +3,10 @@ namespace Product\InputFilter;
 
 use Product\Form\ProductForm;
 use Zend\Filter\StringTrim;
+use Zend\Filter\toInt;
+use Zend\Filter\StripTags;
+use Zend\Validator\StringLength;
 use Zend\InputFilter\InputFilter;
-use Zend\Validator\EmailAddress;
 
 /**
  * Class ProductInputFilter
@@ -80,7 +82,7 @@ class ProductInputFilter extends InputFilter
                         'max' => 100,
                     ],
                 ],
-                ['name' => 'Regex', 'options' => ['pattern' => '/[0-9].[0-9]/'],
+                ['name' => 'Regex', 'options' => ['pattern' => '/[0-9].[0-9]/']],
             ],
         ]);
 

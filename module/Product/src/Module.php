@@ -25,7 +25,7 @@ class Module implements ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Product());
                     return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
                 },
-            ],
+            ]
         ];
     }
 
@@ -45,10 +45,8 @@ class Module implements ConfigProviderInterface
     public function getViewHelperConfig(){
         return [
             'invokables' => [
-
                 'currencyFormat'  => 'Zend\I18n\View\Helper\CurrencyFormat',
-                'dateFormat'  => 'Zend\I18n\View\Helper\DateFormat',
-   
+                'dateFormat'  => 'Zend\I18n\View\Helper\DateFormat',   
             ]
         ];
     } 

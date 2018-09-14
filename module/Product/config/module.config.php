@@ -8,6 +8,18 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+    'controllers' => [
+        'factories' => [
+            Controller\ProductController::class => Controller\ProductControllerFactory::class,
+        ]
+    ],
+
+    'service_manager' => [
+        'factories' => [
+            ProductForm::class => ProductFormFactory::class,
+        ],
+    ],
+
     'form_elements' => [
         'factories' => [
             ProductForm::class => ProductFormFactory::class,
@@ -16,7 +28,7 @@ return [
     
     'input_filters' => [
         'factories' => [
-            ProductInputFilter::class => Zend\ServiceManager\Factory\InvokableFactory::class,
+            ProductInputFilter::class => InvokableFactory::class,
         ],
     ],
     'router' => [
@@ -46,4 +58,11 @@ return [
             'product' => __DIR__ . '/../view'
         ],
     ],
+    'view_helper_config' => [
+        'flashmessenger' => [
+            'message_open_format' => '<div%s><ul><li>',
+            'message_separator_string' => '</li><li>',
+            'message_close_string' => '</li></ul></div>',
+        ]
+    ]
 ];

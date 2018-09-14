@@ -6,12 +6,12 @@ use DomainException;
 
 class Product
 {
-    public $id;
-    public $name;
-    public $description;
-    public $price;
-    public $created;
-    public $updated;
+    protected $id;
+    protected $name;
+    protected $description;
+    protected $price;
+    protected $created;
+    protected $updated;
 
     public function exchangeArray(array $data){
         $this->id     = !empty($data['id']) ? $data['id'] : null;
@@ -31,4 +31,72 @@ class Product
         ];
     }
     
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(){
+        return $this->name;
+    }
+    /**
+     * @param string $name
+     */
+    public function setName($name){
+        $this->name = $name;
+    }
+    /**
+     * @return string
+     */
+    public function getDescription(){
+        return $this->description;
+    }
+    /**
+     * @param string $description
+     */
+    public function setDescription($description){
+        $this->description = $description;
+    }
+    /**
+     * @return double
+     */
+    public function getPrice(){
+        return $this->price;
+    }
+    /**
+     * @param string $price
+     */
+    public function setPrice($price){
+        $this->price = $price;
+    }
+    /**
+     * @return datetime
+     */
+    public function getCreated(){
+        return $this->created;
+    }
+    /**
+     * @param datetime $created
+     */
+    public function setCreated($created){
+        $this->created = $created;
+    }
+    /**
+     * @return datetime
+     */
+    public function getUpdated(){
+        return $this->updated;
+    }
+    /**
+     * @param string $updated
+     */
+    public function setUpdated($updated){
+        $this->updated = $updated;
+    }
 }

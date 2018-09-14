@@ -23,6 +23,8 @@ return [
     'Zend\Log',
     'Zend\Form',
     'Zend\Db',
+    'Zend\Hydrator',
+    'Zend\InputFilter',
     'Zend\Router',
     'Zend\Validator',
     'Application',

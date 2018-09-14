@@ -2,6 +2,7 @@
 $this->inlineScript()->appendFile('/js/sendemail.js', 'text/javascript');
 $title = 'My products';
 $this->headTitle($title);
+echo $this->flashMessenger()->render(\Zend\Mvc\Plugin\FlashMessenger\FlashMessenger::NAMESPACE_SUCCESS, ['alert', 'alert-success']);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <p>
@@ -23,17 +24,17 @@ $this->headTitle($title);
     <tbody>
         <?php foreach ($this->paginator as $product) : ?>
             <tr>
-                <td><input type="checkbox" name="send-email" data-id = "<?= $product->id ?>"></td>
-                <td><?= $this->escapeHtml($product->name) ?></td>
-                <td><?= $this->escapeHtml($product->description) ?></td>
-                <td><?= $this->currencyFormat($this->escapeHtml($product->price), 'BRL', null, 'pt_BR'); ?></td>
-                <td><?= $this->dateFormat(new DateTime($this->escapeHtml($product->created)), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, "pt_BR"); ?></td>
-                <td><?= $this->dateFormat(new DateTime($this->escapeHtml($product->updated)), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, "pt_BR"); ?></td>
+                <td><input type="checkbox" name="send-email" data-id = "<?= $product->getId() ?>"></td>
+                <td><?= $this->escapeHtml($product->getName()) ?></td>
+                <td><?= $this->escapeHtml($product->getDescription()) ?></td>
+                <td><?= $this->currencyFormat($this->escapeHtml($product->getPrice()), 'BRL', null, 'pt_BR'); ?></td>
+                <td><?= $this->dateFormat(new DateTime($this->escapeHtml($product->getCreated())), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, "pt_BR"); ?></td>
+                <td><?= $this->dateFormat(new DateTime($this->escapeHtml($product->getUpdated())), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, "pt_BR"); ?></td>
                 <td>
-                    <a href="<?= $this->url('product', ['action' => 'edit', 'id' => $product->id]) ?>" class="btn btn-warning">
+                    <a href="<?= $this->url('product', ['action' => 'edit', 'id' => $product->getId()]) ?>" class="btn btn-warning">
                         <i class="glyphicon glyphicon-edit"></i>
                     </a>
-                    <a href="<?= $this->url('product', ['action' => 'delete', 'id' => $product->id]) ?>" class="btn btn-danger">
+                    <a href="<?= $this->url('product', ['action' => 'delete', 'id' => $product->getId()]) ?>" class="btn btn-danger">
                         <i class="glyphicon glyphicon-trash"></i>
                     </a>
 

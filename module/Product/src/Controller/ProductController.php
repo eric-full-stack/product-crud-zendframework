@@ -7,14 +7,17 @@ use Product\Model\ProductTable;
 use Product\Form\ProductForm;
 use Product\Model\Product;
 use Application\Service\MailSender;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Interop\Container\ContainerInterface;
 
 class ProductController extends AbstractActionController
 {
     private $table;
+    private $formManager;
 
-
-    public function __construct(ProductTable $table){
-        $this->table = $table;
+    public function __construct(ProductTable $object, $formManager) {
+        $this->table = $object;
+        $this->formManager = $formManager;
     }
 
     /**
@@ -64,29 +67,36 @@ class ProductController extends AbstractActionController
 
         // Set the number of items per page to 10:
         $paginator->setItemCountPerPage(2);
-
-        return new ViewModel(['paginator' => $paginator]);
+        $flashMessages = $this->flashmessenger();
+        return new ViewModel([
+            'paginator' => $paginator,
+            'messages' => $flashMessages->getSuccessMessages()
+        ]);
     }
 
     public function addAction(){
-        $form = new ProductForm();
-        $form->get('submit')->setValue('Add');
+     
+        $this->formManager->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
 
         if (! $request->isPost()) {
-            return ['form' => $form];
+            return ['form' => $this->formManager];
         }
 
-        $product = new Product();
-        $form->setData($request->getPost());
 
-        if (! $form->isValid()) {
-            return ['form' => $form];
+        $this->formManager->setData($request->getPost());
+        
+        if (! $this->formManager->isValid()) {
+            return ['form' => $this->formManager];
         }
+        // print_r($this->formManager->getData());
+        
+        $this->table->saveProduct($this->formManager->getData());
+        
+        $flashMessages = $this->flashmessenger();
+        $flashMessages->addSuccessMessage('Product successfully saved!');
 
-        $product->exchangeArray($form->getData());
-        $this->table->saveProduct($product);
         return $this->redirect()->toRoute('product');
     }
 

@@ -74,13 +74,13 @@ class ProductTable
     public function saveProduct(Product $product)
     {
         $data = [
-            'name' => $product->name,
-            'description'  => $product->description,
-            'price'  => $product->price,
+            'name' => $product->getName(),
+            'description'  => $product->getDescription(),
+            'price'  => $product->getPrice(),
             'updated'  => date("Y-m-d H:i:s"),
         ];
 
-        $id = (int) $product->id;
+        $id = (int) $product->getId();
 
         if ($id === 0) {
             $this->tableGateway->insert($data);

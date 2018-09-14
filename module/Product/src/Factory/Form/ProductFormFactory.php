@@ -1,10 +1,11 @@
 <?php
 namespace Product\Factory\Form;
-use Product\Entity\Product;
+use Product\Model\Product;
 use Product\Form\ProductForm;
 use Product\InputFilter\ProductInputFilter;
 use Interop\Container\ContainerInterface;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Hydrator\ClassMethods;
+
 /**
  * Class ProductFormFactory
  * 
@@ -20,9 +21,8 @@ class ProductFormFactory
         $form = new ProductForm('product');
         $form->setHydrator($container->get('HydratorManager')->get(ClassMethods::class));
         $form->setInputFilter($container->get('InputFilterManager')->get(ProductInputFilter::class));
-        $form->setObject(new Product());
-        $formManager = $container->get('FormElementManager');
-        $form = $formManager->get(ProductForm::class);
+        $form->setObject(new Product);
+
         return $form;
     }
 }
