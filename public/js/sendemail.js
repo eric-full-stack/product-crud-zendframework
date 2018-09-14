@@ -1,4 +1,5 @@
 $("#sendemail").click(function() { 
+	$("#spinner").removeClass('hide');
 	var data = [];
 	$("input[type='checkbox'][data-id]:checked").each(function(id, element){
 		data.push({id: $(element).attr('data-id')})
@@ -13,6 +14,7 @@ $("#sendemail").click(function() {
 				alert('Mail sent successfully!')
 			else
 				alert(res)
+			$("#spinner").addClass('hide');
 		},	
 		error: function(e){
 			console.log(e)

@@ -24,6 +24,9 @@
         ?>
     </head>
     <body>
+        <div class="loading hide" id="spinner">
+            <div class="loader"></div>
+        </div>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -57,5 +60,10 @@
             </footer>
         </div>
         <?= $this->inlineScript() ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#spinner").toggle();
+            });
+        </script>
     </body>
 </html>
