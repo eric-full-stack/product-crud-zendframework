@@ -38,10 +38,11 @@ class ProductController extends AbstractActionController
         $response = $this->getResponse();
 
         $data = $request->getPost();
-
-        foreach($data['data'] as $p){
-            $products[] = $this->table->getProduct($p['id']);
-        }
+        if(!empty($data['data']))
+            foreach($data['data'] as $p)
+                $products[] = $this->table->getProduct($p['id']);
+        else
+            return $response->setContent(\Zend\Json\Json::encode('None products selected'));
         try{
             $mail = new MailSender();
             $res = $mail->sendMail('sender@sender.com', 'recepient@mail.com', 'subject', $products);

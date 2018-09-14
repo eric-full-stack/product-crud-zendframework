@@ -9,7 +9,10 @@ $("#sendemail").click(function() {
 		method: "POST",
 		dataType: 'json',	
 		success: function (res){
-			console.log(res)
+			if(res===1)
+				alert('Mail sent successfully!')
+			else
+				alert(res)
 		},	
 		error: function(e){
 			console.log(e)
