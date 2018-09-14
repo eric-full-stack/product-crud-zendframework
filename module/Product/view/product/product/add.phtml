@@ -1,6 +1,7 @@
 <?php
 $title = 'Add new product';
 $this->headTitle($title);
+echo $this->flashMessenger()->render(\Zend\Mvc\Plugin\FlashMessenger\FlashMessenger::NAMESPACE_ERROR, ['alert', 'alert-danger']);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <?php

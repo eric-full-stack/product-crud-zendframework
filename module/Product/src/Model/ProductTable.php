@@ -7,7 +7,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
-
+date_default_timezone_set('America/Sao_Paulo');
 class ProductTable
 {
     private $tableGateway;

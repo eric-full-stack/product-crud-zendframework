@@ -1,6 +1,5 @@
 <?php
-// module/Product/view/product/product/edit.phtml:
-
+echo $this->flashMessenger()->render(\Zend\Mvc\Plugin\FlashMessenger\FlashMessenger::NAMESPACE_ERROR, ['alert', 'alert-danger']);
 $title = 'Edit product';
 $this->headTitle($title);
 ?>

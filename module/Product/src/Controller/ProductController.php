@@ -79,8 +79,10 @@ class ProductController extends AbstractActionController
         $this->formManager->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
+        $flashMessages = $this->flashmessenger();
 
         if (! $request->isPost()) {
+    
             return ['form' => $this->formManager];
         }
 
@@ -88,13 +90,13 @@ class ProductController extends AbstractActionController
         $this->formManager->setData($request->getPost());
         
         if (! $this->formManager->isValid()) {
+            $flashMessages->addErrorMessage('Invalid inputs!');
             return ['form' => $this->formManager];
         }
         // print_r($this->formManager->getData());
         
         $this->table->saveProduct($this->formManager->getData());
         
-        $flashMessages = $this->flashmessenger();
         $flashMessages->addSuccessMessage('Product successfully saved!');
 
         return $this->redirect()->toRoute('product');
@@ -103,7 +105,9 @@ class ProductController extends AbstractActionController
     public function editAction(){
         $id = (int) $this->params()->fromRoute('id', 0);
 
+        $flashMessages = $this->flashmessenger();
         if (0 === $id) {
+            $flashMessages->addErrorMessage('Invalid ID!');
             return $this->redirect()->toRoute('product', ['action' => 'add']);
         }
 
@@ -113,28 +117,32 @@ class ProductController extends AbstractActionController
         try {
             $product = $this->table->getProduct($id);
         } catch (\Exception $e) {
+            $flashMessages->addErrorMessage('Invalid ID!');
             return $this->redirect()->toRoute('product', ['action' => 'index']);
         }
 
-        $form = new ProductForm();
-        $form->bind($product);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $this->formManager->bind($product);
+        $this->formManager->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
-        $viewData = ['id' => $id, 'form' => $form];
+        $viewData = ['id' => $id, 'form' => $this->formManager];
 
         if (! $request->isPost()) {
+
             return $viewData;
         }
 
     
-        $form->setData($request->getPost());
+        $this->formManager->setData($request->getPost());
 
-        if (! $form->isValid()) {
+        if (! $this->formManager->isValid()) {
+            $flashMessages->addErrorMessage('Invalid inputs!');
             return $viewData;
         }
         
         $this->table->saveProduct($product);
+
+        $flashMessages->addSuccessMessage('Product successfully edited!');
 
         // Redirect to product list
         return $this->redirect()->toRoute('product', ['action' => 'index']);
@@ -142,7 +150,9 @@ class ProductController extends AbstractActionController
 
     public function deleteAction(){
         $id = (int) $this->params()->fromRoute('id', 0);
+        $flashMessages = $this->flashmessenger();
         if (!$id) {
+            $flashMessages->addErrorMessage('Invalid ID!');
             return $this->redirect()->toRoute('product');
         }
 
@@ -154,14 +164,19 @@ class ProductController extends AbstractActionController
                 $id = (int) $request->getPost('id');
                 $this->table->deleteProduct($id);
             }
-
+            $flashMessages->addSuccessMessage('Product successfully deleted!');
             // Redirect to list of products
             return $this->redirect()->toRoute('product');
         }
-
+        try {
+            $product = $this->table->getProduct($id);
+        } catch (\Exception $e) {
+            $flashMessages->addErrorMessage('Invalid ID!');
+            return $this->redirect()->toRoute('product', ['action' => 'index']);
+        }
         return [
             'id'    => $id,
-            'product' => $this->table->getProduct($id),
+            'product' => $product,
         ];
     }
 

@@ -3,6 +3,7 @@ $this->inlineScript()->appendFile('/js/sendemail.js', 'text/javascript');
 $title = 'My products';
 $this->headTitle($title);
 echo $this->flashMessenger()->render(\Zend\Mvc\Plugin\FlashMessenger\FlashMessenger::NAMESPACE_SUCCESS, ['alert', 'alert-success']);
+echo $this->flashMessenger()->render(\Zend\Mvc\Plugin\FlashMessenger\FlashMessenger::NAMESPACE_ERROR, ['alert', 'alert-danger']);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <p>
